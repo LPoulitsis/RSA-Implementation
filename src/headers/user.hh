@@ -6,11 +6,13 @@ class User {
     int GetID();
     string GetName();
     Rsa GetProperties();
-    string SendMessageTo(int id);
-    string GetMessageFrom(int id);
+    void SendMessageTo();
+    void GetMessageFrom(string message, int id);
 
    private:
     Rsa properties;
+    string name;
     int id;
+    string message;
     void IncrementID();
 };
