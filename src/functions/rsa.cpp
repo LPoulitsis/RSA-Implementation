@@ -50,6 +50,8 @@ void Rsa::KeyGeneration() {
     TwoRandomIntegers(e, d);  // Choose two random integers for e, d
     publicKey.SetE(e);
     privateKey.SetD(d);
+
+    delete &p, &q, primeNumbers;
 }
 
 string Rsa::RsaEncrypt(string message) {
