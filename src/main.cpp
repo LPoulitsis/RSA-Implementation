@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "headers/user.hh"
 
 int main() {
