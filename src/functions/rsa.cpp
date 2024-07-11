@@ -1,6 +1,8 @@
 #include "../headers/rsa.hh"
 
+#include <cmath>
 #include <random>
+#include <string>
 
 Rsa::Rsa() { KeyGeneration(); }
 
@@ -36,7 +38,35 @@ void Rsa::TwoRandomIntegers(int& e, int& d) {
     } while ((e * d) != (1 % Phi(GetPublicKey().GetN())));
 }
 
-void Rsa::KeyGeneration() {}
+void Rsa::KeyGeneration() {
+    // Step (1)
+    TwoRandomPrimeNumbers();  // Get p, q prime numbers
+    int N = p * q;            // Calculate their product
+    publicKey.SetN(N);
+    privateKey.SetN(N);
+
+    // Step (2)
+    int e, d;
+    TwoRandomIntegers(e, d);  // Choose two random integers for e, d
+    publicKey.SetE(e);
+    privateKey.SetD(d);
+}
+
+string Rsa::RsaEncrypt(string message) {
+    const char* c_message = message.c_str();
+    string ciphertext = "";
+    int N = GetPublicKey().GetN();
+    int e = GetPublicKey().GetE();
+    int y;
+    for (size_t i = 0; i < message.size(); i++) {
+        int charValue = static_cast<int>(c_message[i]);
+        y = (int)pow(charValue, e) % N;
+        ciphertext += std::to_string(y) + " ";
+    }
+    return ciphertext;
+}
+
+string Rsa::RsaDecrypt(string ciphertext) {}
 
 // PublicKey Class Implementations
 void PublicKey::SetE(int e) { PublicKey::e = e; }
