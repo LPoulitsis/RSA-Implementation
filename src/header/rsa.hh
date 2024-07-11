@@ -20,7 +20,6 @@ class RsaProperties {
     PrivateKey privateKey;
 
     // Constructor that will call the KeyGeneration method
-    // using the Singleton Design Pattern
     RsaProperties();
 
     // Generates two random prime numbers p, q
