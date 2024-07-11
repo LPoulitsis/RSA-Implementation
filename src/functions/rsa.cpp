@@ -82,8 +82,6 @@ string Rsa::RsaDecrypt(string ciphertext) {
     return message;
 }
 
-string Rsa::RsaDecrypt(string ciphertext) {}
-
 // PublicKey Class Implementations
 void PublicKey::SetE(int e) { PublicKey::e = e; }
 void PublicKey::SetN(int N) { PublicKey::N = N; }

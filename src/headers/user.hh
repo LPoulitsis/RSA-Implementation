@@ -8,9 +8,10 @@ class User {
     Rsa GetProperties();
     void SendMessageTo();
     void GetMessageFrom(string message, int id);
+    string GetMessage();
 
    private:
-    Rsa properties;
+    Rsa* properties;
     string name;
     int id;
     string message;
