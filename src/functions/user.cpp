@@ -15,8 +15,11 @@ Rsa User::GetProperties() { return *properties; }
 void User::SendMessageTo() {
     cout << "Type an id to send the message to: ";
     cin >> id;
+
+    cin.ignore();
+
     cout << "Type the message to send: ";
-    cin >> message;
+    getline(cin, message);
 }
 
 void User::GetMessageFrom(string message, int id) {

@@ -5,6 +5,7 @@ int main() {
     User* alice = new User("Alice");
 
     bob->SendMessageTo();
+    cout << bob->GetMessage();
     string ciphertext = bob->GetProperties().RsaEncrypt(bob->GetMessage());
 
     cout << bob->GetName() << " sent to " << alice->GetName() << " with id "
