@@ -60,10 +60,24 @@ string Rsa::RsaEncrypt(string message) {
     int y;
     for (size_t i = 0; i < message.size(); i++) {
         int charValue = static_cast<int>(c_message[i]);
-        y = (int)pow(charValue, e) % N;
+        y = (int)pow(charValue, e) % N;  // y = (x ^ e) mod N
         ciphertext += std::to_string(y) + " ";
     }
     return ciphertext;
+}
+
+string Rsa::RsaDecrypt(string ciphertext) {
+    const char* c_cipher = ciphertext.c_str();
+    string message = "";
+    int N = GetPrivateKey().GetN();
+    int d = GetPrivateKey().GetD();
+    int x;
+    for (size_t i = 0; i < ciphertext.size(); i++) {
+        int charValue = static_cast<int>(c_cipher[i]);
+        x = (int)pow(charValue, d) % N;  // x = (y ^ d) mod N
+        message += std::to_string(x) + " ";
+    }
+    return message;
 }
 
 string Rsa::RsaDecrypt(string ciphertext) {}
