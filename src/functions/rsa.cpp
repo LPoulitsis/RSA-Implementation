@@ -61,6 +61,7 @@ string Rsa::RsaEncrypt(string message) {
     string ciphertext = "";
     int N = GetPublicKey().GetN();
     int e = GetPublicKey().GetE();
+
     int y;
     for (size_t i = 0; i < message.size(); i++) {
         int charValue = static_cast<int>(c_message[i]);
@@ -70,22 +71,24 @@ string Rsa::RsaEncrypt(string message) {
     return ciphertext;
 }
 
+// Decrypts the ciphertext using the private key
 string Rsa::RsaDecrypt(string ciphertext) {
-    string message = "";
+    string plaintext = "";
     int N = GetPrivateKey().GetN();
     int d = GetPrivateKey().GetD();
+    cout << "N: " << N << endl;
+    cout << "d: " << d << endl;
     int x;
-
-    // convert ciphertext to message string
     stringstream ss(ciphertext);
-    string token;
-    while (getline(ss, token, ' ')) {
-        x = stoi(token);
-        int y = (int)pow(x, d) % N;  // y = (x ^ d) mod N
-        message += static_cast<char>(y);
+    string temp;
+    while (ss >> temp) {
+        x = stoi(temp);
+        x = (int)pow(x, d) % N;  // x = (y ^ d) mod N
+        cout << x << ": " << static_cast<char>(x) << endl;
+        // store x in the plaintext
+        plaintext += static_cast<char>(x);
     }
-
-    return message;
+    return plaintext;
 }
 
 // PublicKey Class Implementations
