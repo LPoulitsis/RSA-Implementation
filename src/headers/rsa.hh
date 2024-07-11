@@ -2,28 +2,37 @@
 
 using namespace std;
 
-class RsaProperties {
+// A small set of prime numbers
+int primeNumbers[] = {2,  3,  5,  7,  11, 13, 17, 19, 23, 29, 31, 37, 41,
+                      43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
+
+int p, q;
+
+class Rsa {
    public:
-    // Generates the public and private keys needed for the user
-    void KeyGeneration();
+    // Constructor that will call the KeyGeneration method
+    Rsa();
+
+    // Deconstructor that deletes this object instance
+    ~Rsa();
 
     string RsaEncrypt(string message);
 
     string RsaDecrypt(string ciphertext);
 
-    PublicKey GetPublicKey();
+    PublicKey GetPublicKey() const;
 
-    PrivateKey GetPrivateKey();
+    PrivateKey GetPrivateKey() const;
 
    private:
     PublicKey publicKey;
     PrivateKey privateKey;
 
-    // Constructor that will call the KeyGeneration method
-    RsaProperties();
+    // Generates the public and private keys needed for the user
+    void KeyGeneration();
 
     // Generates two random prime numbers p, q
-    void TwoRandomPrimeNumbers(int& p, int& q);
+    void TwoRandomPrimeNumbers();
 
     // Generates two random integers e, d
     void TwoRandomIntegers(int& e, int& d);
@@ -48,10 +57,10 @@ class PublicKey {
 
 class PrivateKey {
    public:
-    void SetE(int e);
+    void SetD(int d);
     void SetN(int N);
 
-    int GetE();
+    int GetD();
     int GetN();
 
    private:
