@@ -8,11 +8,9 @@ int p, q;
 
 Rsa::Rsa() { KeyGeneration(); }
 
-Rsa::~Rsa() { delete this; }
+PublicKey Rsa::GetPublicKey() const { return *publicKey; }
 
-PublicKey Rsa::GetPublicKey() const { return publicKey; }
-
-PrivateKey Rsa::GetPrivateKey() const { return privateKey; }
+PrivateKey Rsa::GetPrivateKey() const { return *privateKey; }
 
 int Rsa::Phi(int N) { return N - p - q + 1; }
 
@@ -44,16 +42,18 @@ void Rsa::KeyGeneration() {
     // Step (1)
     TwoRandomPrimeNumbers();  // Get p, q prime numbers
     int N = p * q;            // Calculate their product
-    publicKey.SetN(N);
-    privateKey.SetN(N);
+
+    publicKey = new PublicKey();
+    privateKey = new PrivateKey();
+
+    publicKey->SetN(N);
+    privateKey->SetN(N);
 
     // Step (2)
     int e, d;
     TwoRandomIntegers(e, d);  // Choose two random integers for e, d
-    publicKey.SetE(e);
-    privateKey.SetD(d);
-
-    delete &p, &q, primeNumbers;
+    publicKey->SetE(e);
+    privateKey->SetD(d);
 }
 
 string Rsa::RsaEncrypt(string message) {
@@ -65,22 +65,26 @@ string Rsa::RsaEncrypt(string message) {
     for (size_t i = 0; i < message.size(); i++) {
         int charValue = static_cast<int>(c_message[i]);
         y = (int)pow(charValue, e) % N;  // y = (x ^ e) mod N
-        ciphertext += std::to_string(y) + " ";
+        ciphertext += to_string(y) + " ";
     }
     return ciphertext;
 }
 
 string Rsa::RsaDecrypt(string ciphertext) {
-    const char* c_cipher = ciphertext.c_str();
     string message = "";
     int N = GetPrivateKey().GetN();
     int d = GetPrivateKey().GetD();
     int x;
-    for (size_t i = 0; i < ciphertext.size(); i++) {
-        int charValue = static_cast<int>(c_cipher[i]);
-        x = (int)pow(charValue, d) % N;  // x = (y ^ d) mod N
-        message += std::to_string(x) + " ";
+
+    // convert ciphertext to message string
+    stringstream ss(ciphertext);
+    string token;
+    while (getline(ss, token, ' ')) {
+        x = stoi(token);
+        int y = (int)pow(x, d) % N;  // y = (x ^ d) mod N
+        message += static_cast<char>(y);
     }
+
     return message;
 }
 

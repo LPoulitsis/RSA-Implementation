@@ -3,6 +3,7 @@
 #include <cmath>
 #include <iostream>
 #include <random>
+#include <sstream>
 #include <string>
 
 using namespace std;
@@ -39,9 +40,6 @@ class Rsa {
     // Constructor that will call the KeyGeneration method
     Rsa();
 
-    // Deconstructor that deletes this object instance
-    ~Rsa();
-
     string RsaEncrypt(string message);
 
     string RsaDecrypt(string ciphertext);
@@ -51,8 +49,8 @@ class Rsa {
     PrivateKey GetPrivateKey() const;
 
    private:
-    PublicKey publicKey;
-    PrivateKey privateKey;
+    PublicKey* publicKey;
+    PrivateKey* privateKey;
 
     // Generates the public and private keys needed for the user
     void KeyGeneration();
